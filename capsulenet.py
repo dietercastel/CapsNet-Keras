@@ -87,7 +87,7 @@ def train(model, data, args):
                                batch_size=args.batch_size, histogram_freq=args.debug)
     checkpoint = callbacks.ModelCheckpoint(args.save_dir + '/weights-{epoch:02d}.h5',
                                            save_best_only=True, save_weights_only=True, verbose=1)
-    lr_decay = callbacks.LearningRateScheduler(schedule=lambda epoch: args.lr * (0.9 ** epoch))
+    #lr_decay = callbacks.LearningRateScheduler(schedule=lambda epoch: args.lr * (0.9 ** epoch))
 
     # compile the model
     model.compile(optimizer=optimizers.Adam(lr=args.lr),
@@ -115,7 +115,8 @@ def train(model, data, args):
                         steps_per_epoch=int(y_train.shape[0] / args.batch_size),
                         epochs=args.epochs,
                         validation_data=[[x_test, y_test], [y_test, x_test]],
-                        callbacks=[log, tb, checkpoint, lr_decay])
+                        #callbacks=[log, tb, checkpoint, lr_decay])
+                        callbacks=[log, tb, checkpoint])
     # End: Training with data augmentation -----------------------------------------------------------------------#
 
     model.save_weights(args.save_dir + '/trained_model.h5')
